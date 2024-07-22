@@ -1,0 +1,30 @@
+SecureGuard
+# SecureGuard
+
+import hashlib
+import os
+import base64
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def generate_salt():
+    return base64.b64encode(os.urandom(16)).decode()
+
+def verify_password(stored_password_hash, password, salt):
+    return stored_password_hash == hashlib.sha256((password + salt).encode()).hexdigest()
+
+def main():
+    password = "my_secure_password"
+    salt = generate_salt()
+    hashed_password = hash_password(password + salt)
+    
+    print(f"Salt: {salt}")
+    print(f"Hashed Password: {hashed_password}")
+    
+    # Simulate password verification
+    is_verified = verify_password(hashed_password, password, salt)
+    print(f"Password Verified: {is_verified}")
+
+if __name__ == "__main__":
+    main()
